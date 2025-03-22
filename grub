@@ -1,0 +1,10 @@
+menuentry "SRD" {
+  set isofile="/boot/s12.iso"
+  search --no-floppy --file --set=root ${isofile}
+  probe -u $root --set=imgdevuuid
+  set imgdevpath="/dev/disk/by-uuid/$imgdevuuid"
+  loopback loop $isofile
+  linux (loop)/sysresccd/boot/x86_64/vmlinuz archisobasedir=sysresccd img_dev=$imgdevpath img_loop=$isofile earlymodules=loop setkmap=us
+  initrd (loop)/sysresccd/boot/intel_ucode.img (loop)/sysresccd/boot/amd_ucode.img (loop)/sysresccd/boot/x86_64/sysresccd.img
+
+}
